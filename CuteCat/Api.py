@@ -1,7 +1,7 @@
 import abc
 import functools
 from typing import Callable, Any, Union, Awaitable , Optional , Dict
-import httpx
+import requests
 import json
 
 class SyncApi:
@@ -19,15 +19,6 @@ class SyncApi:
         """获取一个可调用对象，用于调用对应 API。"""
         return functools.partial(self.call_action, item)
 
-def _handle_api_result(result: Optional[Dict[str, Any]]) -> Any:
-    if result is None:
-        return None
-    if 'code' in result and 'msg' in result:
-        if result['code'] == 0:
-            return result
-        else:
-            raise Exception(result['msg'])
- 
 class HttpApi(SyncApi):
     """
     HTTP API 实现类。
@@ -61,10 +52,8 @@ class HttpApi(SyncApi):
             params['member_wxid'] = ''
 
         try:
-            ret = httpx.post(self._api_root, headers=headers, json=params)
-            if 200 <= ret.status_code < 300:
-                return json.loads(ret.text)
-        except httpx.InvalidURL:
-            raise NetworkError('API root url invalid')
-        except httpx.HTTPError:
-            raise NetworkError('HTTP request failed')
+            ret = requests.post(self._api_root, headers=headers, json=params)
+            return json.loads(ret.text)
+        except Exception as e:
+            print(e)
+            return None
