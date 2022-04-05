@@ -23,7 +23,7 @@ setup(
     keywords=["python-CuteCat-iHttp", ],
     install_requires=[
         "flask",
-        "httpx",
+        "requests",
     ],
     long_description=long_description,
     long_description_content_type="text/markdown",
