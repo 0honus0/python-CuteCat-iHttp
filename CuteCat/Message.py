@@ -21,6 +21,8 @@ class Message:
             return 'location'
         if self.msg['type'] == 49:
             return 'share'
+        if self.msg['type'] == 50:
+            return 'voip'
         if self.msg['type'] == 2000:
             return 'transfer'
         if self.msg['type'] == 2001:
