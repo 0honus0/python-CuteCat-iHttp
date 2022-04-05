@@ -29,6 +29,8 @@ class Message:
             return 'miniprogram'
         if self.msg['type'] == 2003:
             return 'group_invite'
+        if self.msg['type'] == 10002:
+            return 'multivoip'
 
     def __str__(self):
         return self.msg
