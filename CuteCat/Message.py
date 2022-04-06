@@ -21,6 +21,8 @@ class Message:
             return 'location'
         if self.msg['type'] == 49:
             return 'share'
+        if self.msg['type'] == 50:
+            return 'voip'
         if self.msg['type'] == 2000:
             return 'transfer'
         if self.msg['type'] == 2001:
@@ -29,6 +31,8 @@ class Message:
             return 'miniprogram'
         if self.msg['type'] == 2003:
             return 'group_invite'
+        if self.msg['type'] == 10002:
+            return 'multivoip'
 
     def __str__(self):
         return self.msg
