@@ -13,7 +13,7 @@ class CuteCat(SyncApi):
         self._server_app = Flask(__name__)
         self._server_app.add_url_rule('/event', methods=['POST'],view_func=self._handle_event)
         self.logger = self._server_app.logger
-        self._message_class = Message
+        self.api_root = api_root
         if not access_token:
             self._api = HttpApi(api_root = api_root , robot_wxid = robot_wxid)
         else:
@@ -42,11 +42,21 @@ class CuteCat(SyncApi):
         event_type = ev.type
         self.logger.info(f'received event: {event_type}')
 
-        if self._message_class and 'type' in ev:
-            ev['type'] = self._message_class(ev).type()
+        message = Message(ev)
+        ev['type'] = message.type
+        if message.type in ['image' , 'voice' , 'video' , 'share']:
+            ev['msg'] = self.url_preprocess(ev)
         results = self._bus.emit(event_type, ev)
         res = results[0] if results else None
         return jsonify(res)
+
+    def url_preprocess(self , msg : str):
+        path = msg['msg']
+        if '\\WeChat' in path:
+            path = '/WeChat'+ path.split('\\WeChat')[-1].replace('\\', '/')
+            return self.api_root + path
+        else:
+            return path
 
     def run(self,
             host: str = '0.0.0.0',

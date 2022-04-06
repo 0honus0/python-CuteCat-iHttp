@@ -2,6 +2,8 @@
 
 可爱猫 iHttp 插件的 python 接口封装 （参考aiocqhttp完成）
 
+同时将发送的路径链接转换为url链接，为实现此功能，需要将 WeChat 安装到可爱猫的根目录下
+
 接收事件类型
 
 ```
@@ -9,6 +11,7 @@
     on_friend_msg = on('EventFriendMsg')
     on_received_transfer = on('EventReceivedTransfer')
     on_friend_vertify = on('EventFriendVerify')
+    on_sendout_msg = on('EventSendOutMsg')
     on_sys_msg = on('EventSysMsg')
     on_login = on('EventLogin')
 ```
