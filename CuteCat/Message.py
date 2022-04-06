@@ -4,38 +4,29 @@ class Message:
     def __init__(self, msg : Any = None):
         self.msg = msg
 
+    @property
     def type(self):
-        if self.msg['type'] == 1:
-            return 'text'
-        if self.msg['type'] == 3:
-            return 'image'
-        if self.msg['type'] == 34:
-            return 'voice'
-        if self.msg['type'] == 42:
-            return 'card'
-        if self.msg['type'] == 43:
-            return 'video'
-        if self.msg['type'] == 47:
-            return 'animated_sticker'
-        if self.msg['type'] == 48:
-            return 'location'
-        if self.msg['type'] == 49:
-            return 'share'
-        if self.msg['type'] == 50:
-            return 'voip'
-        if self.msg['type'] == 2000:
-            return 'transfer'
-        if self.msg['type'] == 2001:
-            return 'redpacket'
-        if self.msg['type'] == 2002:
-            return 'miniprogram'
-        if self.msg['type'] == 2003:
-            return 'group_invite'
-        if self.msg['type'] == 10002:
-            return 'multivoip'
+        type_dict = {
+            1      : 'text',
+            3      : 'image',
+            34     : 'voice',
+            42     : 'card',
+            43     : 'video',
+            47     : 'animatedsticker',
+            48     : 'location',
+            49     : 'share',
+            50     : 'voip',
+            2000   : 'transfer',
+            2001   : 'redpacket',
+            2002   : 'miniprogram',
+            2003   : 'groupinvite',
+            10002  : 'multivoip'
+        }
+        return type_dict[self.msg['type']] if self.msg['type'] in type_dict else self.msg['type']
+
 
     def __str__(self):
         return self.msg
 
     def __repr__(self):
-        return str(self.msg)
+        return self.msg

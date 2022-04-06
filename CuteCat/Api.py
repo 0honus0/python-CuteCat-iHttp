@@ -32,7 +32,7 @@ class HttpApi(SyncApi):
 
     def call_action(self, action: str, **params) -> Any:
         if not self._api_root:
-            raise 'ApiNotAvailable'
+            raise Exception('ApiNotAvailable')
 
         headers = {}
         if self._access_token:
