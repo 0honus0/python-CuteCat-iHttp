@@ -38,4 +38,4 @@ class Message:
         return self.msg
 
     def __repr__(self):
-        return str(self.msg)
+        return self.msg
