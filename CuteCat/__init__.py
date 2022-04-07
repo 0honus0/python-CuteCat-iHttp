@@ -36,6 +36,7 @@ class CuteCat(SyncApi):
         return self._api.call_action(action , **params)
 
     def _handle_request(self , filename):
+        #增加win下判断，但是可用性未知，根据文档判断不可用
         if 'nt' in os.name:
             path = os.path.expanduser('~').replace('\\','/') + '/AppData/Local/Temp/' + filename
         else:
