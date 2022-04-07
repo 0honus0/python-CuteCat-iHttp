@@ -1,23 +1,26 @@
-from flask import Flask, request, abort, jsonify, Response
+from flask import Flask, request, abort, jsonify, Response , send_file
 from typing import List, Callable , Coroutine , Dict , Any
 from .Event import Event
 from .Message import Message
 from .Bus import EventBus
 from .Api import SyncApi , HttpApi
 import logging
+import os
+import magic
 
 class CuteCat(SyncApi):
 
-    def __init__(self , api_root : str = None , robot_wxid : str = None ,access_token : str = None) :
+    def __init__(self , api_url : str = None , robot_wxid : str = None ,access_token : str = None) :
         self._bus = EventBus()
         self._server_app = Flask(__name__)
         self._server_app.add_url_rule('/event', methods=['POST'],view_func=self._handle_event)
+        self._server_app.add_url_rule('/tmp/<filename>', methods=['GET'] ,view_func=self._handle_request)
         self.logger = self._server_app.logger
-        self.api_root = api_root
+        self.api_url = api_url
         if not access_token:
-            self._api = HttpApi(api_root = api_root , robot_wxid = robot_wxid)
+            self._api = HttpApi(api_url = api_url , robot_wxid = robot_wxid)
         else:
-            self._api = HttpApi(api_root = api_root , access_token = access_token , robot_wxid = robot_wxid)
+            self._api = HttpApi(api_url = api_url , access_token = access_token , robot_wxid = robot_wxid)
         
     def on(self , *event_type : str) -> Callable:
         def deco(func: Callable) -> Callable:
@@ -31,6 +34,20 @@ class CuteCat(SyncApi):
 
     def call_action(self , action : str , **params):
         return self._api.call_action(action , **params)
+
+    def _handle_request(self , filename):
+        if 'nt' in os.name:
+            path = os.path.expanduser('~').replace('\\','/') + '/AppData/Local/Temp/' + filename
+        else:
+            path = '/tmp/' + filename
+
+        if not os.path.exists(path):
+            return abort(404)
+        else:
+            mime = magic.from_file(path, mime=True)
+            if isinstance(mime, bytes):
+                mime = mime.decode()
+            return send_file(path , as_attachment = True , mimetype = mime , download_name = filename+'.'+mime.split('/')[-1])
 
     def _handle_event(self) -> Any:
         payload = request.json
@@ -54,7 +71,7 @@ class CuteCat(SyncApi):
         path = msg['msg']
         if '\\WeChat' in path:
             path = '/WeChat'+ path.split('\\WeChat')[-1].replace('\\', '/')
-            return self.api_root + path
+            return self.api_url + path
         else:
             return path
 
