@@ -20,6 +20,7 @@ class Message:
             2001   : 'redpacket',
             2002   : 'miniprogram',
             2003   : 'groupinvite',
+            2005   ：'revokemsg',
             10002  : 'multivoip'
         }
         return type_dict[self.msg['type']] if self.msg['type'] in type_dict else self.msg['type']
