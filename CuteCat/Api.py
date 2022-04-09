@@ -24,14 +24,14 @@ class HttpApi(SyncApi):
     HTTP API 实现类。
     """
 
-    def __init__(self, api_root: Optional[str] = None, access_token: Optional[str] = None, robot_wxid: Optional[str] = None):
+    def __init__(self, api_url: Optional[str] = None, access_token: Optional[str] = None, robot_wxid: Optional[str] = None):
         super().__init__()
-        self._api_root = api_root
+        self._api_url = api_url
         self._access_token = access_token
         self.robot_wxid = robot_wxid
 
     def call_action(self, action: str, **params) -> Any:
-        if not self._api_root:
+        if not self._api_url:
             raise Exception('ApiNotAvailable')
 
         headers = {}
@@ -52,7 +52,7 @@ class HttpApi(SyncApi):
             params['member_wxid'] = ''
 
         try:
-            ret = requests.post(self._api_root, headers=headers, json=params)
+            ret = requests.post(self._api_url, headers=headers, json=params)
             return json.loads(ret.text)
         except Exception as e:
             print(e)

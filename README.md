@@ -45,7 +45,7 @@ demo.py
 
 from CuteCat import CuteCat
 
-bot = CuteCat( api_root = '' , robot_wxid = '' , access_token = '')
+bot = CuteCat( api_url = '' , robot_wxid = '' , access_token = '')
 
 @bot.on('EventFriendMsg')
 def eventfrinendmsg(msg):
