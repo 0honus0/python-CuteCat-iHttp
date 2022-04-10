@@ -3,6 +3,7 @@ import functools
 from typing import Callable, Any, Union, Awaitable , Optional , Dict
 import requests
 import json
+import logging
 
 class SyncApi:
     """
@@ -40,20 +41,24 @@ class HttpApi(SyncApi):
 
         params['success'] = "true"
         params['event'] = action
-        if params.get('robot_wxid') is None:
+        if not params.get('robot_wxid'):
             params['robot_wxid'] = self.robot_wxid
-        if params.get('to_wxid') is None:
+        if not params.get('to_wxid'):
             params['to_wxid'] = ''
-        if params.get('msg') is None:
+        if not params.get('msg'):
             params['msg'] = ''
-        if params.get('group_wxid') is None:
+        if not params.get('group_wxid'):
             params['group_wxid'] = ''
-        if params.get('member_wxid') is None:
+        if not params.get('member_wxid'):
             params['member_wxid'] = ''
 
-        try:
-            ret = requests.post(self._api_url, headers=headers, json=params)
-            return json.loads(ret.text)
-        except Exception as e:
-            print(e)
-            return None
+        retry = 3
+        while retry > 0:
+            try:
+                ret = requests.post(self._api_url, headers=headers, json=params)
+                return json.loads(ret.text)
+            except Exception as e:
+                logging.getLogger(__name__).warning(f"call_action {action} failed: {e}")
+                retry -= 1
+        return None
+        
