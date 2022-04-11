@@ -22,7 +22,7 @@ class Message:
             2003   : 'groupinvite',
             2005   : 'revokemsg',
             10000  : 'taptap',      # maybe sysmsg
-            10002  : 'multivoip'
+            10002  : 'other'        # multivoip taptap
         }
         return type_dict[self.msg['type']] if self.msg['type'] in type_dict else self.msg['type']
 
