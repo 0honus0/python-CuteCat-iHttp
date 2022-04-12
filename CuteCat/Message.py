@@ -16,6 +16,7 @@ class Message:
             48     : 'location',
             49     : 'share',
             50     : 'voip',
+            106    : 'sysnotify',   # system notification 修改群名称
             2000   : 'transfer',
             2001   : 'redpacket',
             2002   : 'miniprogram',
