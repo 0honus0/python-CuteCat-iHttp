@@ -52,11 +52,12 @@ class HttpApi(SyncApi):
         if not params.get('member_wxid'):
             params['member_wxid'] = ''
 
-        retry = 3
+        retry = 5
         while retry > 0:
             try:
                 ret = requests.post(self._api_url, headers=headers, json=params)
                 if  ret.json()["code"] == -1:
+                    retry -= 1
                     continue
                 return json.loads(ret.text)
             except Exception as e:
