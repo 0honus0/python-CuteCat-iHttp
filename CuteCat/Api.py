@@ -39,23 +39,23 @@ class HttpApi(SyncApi):
         if self._access_token:
             headers['Authorization'] = self._access_token
 
-        params['success'] = "true"
-        params['event'] = action
-        if not params.get('robot_wxid'):
-            params['robot_wxid'] = self.robot_wxid
-        if not params.get('to_wxid'):
-            params['to_wxid'] = ''
-        if not params.get('msg'):
-            params['msg'] = ''
-        if not params.get('group_wxid'):
-            params['group_wxid'] = ''
-        if not params.get('member_wxid'):
-            params['member_wxid'] = ''
+        param = {
+            'msg'         : '',
+            'to_wxid'     : '',
+            'group_wxid'  : '',
+            'member_wxid' : '',
+            'success'     : True ,
+            'event'       : action ,
+            'robot_wxid'  : self.robot_wxid,
+        }
 
-        retry = 5
+        for k , v in params.items():
+            param[k] = v
+
+        retry = 3
         while retry > 0:
             try:
-                ret = requests.post(self._api_url, headers=headers, json=params)
+                ret = requests.post(self._api_url, headers=headers, json=param)
                 if  ret.json()["code"] == -1:
                     retry -= 1
                     continue
