@@ -56,6 +56,8 @@ class HttpApi(SyncApi):
         while retry > 0:
             try:
                 ret = requests.post(self._api_url, headers=headers, json=params)
+                if  ret.json()["code"] == -1:
+                    continue
                 return json.loads(ret.text)
             except Exception as e:
                 logging.getLogger(__name__).warning(f"call_action {action} failed: {e}")
