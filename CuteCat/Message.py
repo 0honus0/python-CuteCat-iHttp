@@ -22,6 +22,7 @@ class Message:
             2002   : 'miniprogram',
             2003   : 'groupinvite',
             2005   : 'revokemsg',
+            2006   : 'groupannouncement',
             10000  : 'sysmsg',      # sysmsg , 包含 拍一拍 语音消息 撤回消息 等等 , 通过SendOutMsg接收
             10002  : 'other'        # multivoip , taptap , ClientCheckConsistency
         }
