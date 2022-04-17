@@ -55,7 +55,7 @@ class HttpApi(SyncApi):
         retry = 3
         while retry > 0:
             try:
-                ret = requests.post(self._api_url, headers=headers, json=param)
+                ret = requests.post(self._api_url, headers = headers, json = param , timeout = 30)
                 if json.loads(ret.text)['code'] == -1:
                     retry -= 1
                     continue
