@@ -63,5 +63,5 @@ class HttpApi(SyncApi):
             except Exception as e:
                 logging.getLogger(__name__).warning(f"call_action {action} failed: {e}")
                 retry -= 1
-        return None
+        return {}
         
