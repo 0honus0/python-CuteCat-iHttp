@@ -11,6 +11,7 @@ class Message:
             1      : 'text',
             3      : 'image',
             34     : 'voice',
+            35     : 'qqmail',
             37     : 'friendrequest',
             42     : 'card',
             43     : 'video',
