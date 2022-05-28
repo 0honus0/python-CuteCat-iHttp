@@ -5,18 +5,20 @@ from .Message import Message
 from .Bus import EventBus
 from .Api import SyncApi , HttpApi
 import logging
-import os
+import os, re
 import magic
 
 class CuteCat(SyncApi):
 
-    def __init__(self , api_url : str = None , robot_wxid : str = None ,access_token : str = None) :
+    def __init__(self , api_url : str = None , self_url: str = 'http://0.0.0.0:18888', robot_wxid : str = None ,access_token : str = None) :
         self._bus = EventBus()
         self._server_app = Flask(__name__)
         self._server_app.add_url_rule('/event', methods=['POST'],view_func=self._handle_event)
         self._server_app.add_url_rule('/tmp/<filename>', methods=['GET'] ,view_func=self._handle_request)
         self.logger = self._server_app.logger
         self.api_url = api_url
+        self.host = re.findall('http://(.+?):', self_url)[0]
+        self.port = int((re.findall('http://.+?:(.+?)$',self_url))[0])
         if not access_token:
             self._api = HttpApi(api_url = api_url , robot_wxid = robot_wxid)
         else:
@@ -77,13 +79,11 @@ class CuteCat(SyncApi):
             return path
 
     def run(self,
-            host: str = '0.0.0.0',
-            port: int = 18888,
             *args,
             **kwargs) -> None:
         """运行 bot 对象，实际就是运行 Flask app，参数与 `Flask.run` 一致。"""
         if 'use_reloader' not in kwargs:
             kwargs['use_reloader'] = False
-        self._server_app.run(host=host, port=port, *args, **kwargs)
+        self._server_app.run(host=self.host, port=self.port, *args, **kwargs)
 
     
