@@ -73,8 +73,7 @@ class CuteCat(SyncApi):
     def url_preprocess(self , msg : str):
         path = msg['msg']
         if '\\WeChat' in path:
-            path = '/WeChat'+ path.split('\\WeChat')[-1].replace('\\', '/')
-            return self.api_url + path
+            return f"{self.api_url}/get_file?path={path}"
         else:
             return path
 
