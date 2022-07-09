@@ -7,9 +7,10 @@ class Message:
     @property
     def type(self):
         type_dict = {
-            0      : 'eventnotify', # 成员变更 面对面付款
+            0      : 'eventnotify', # 成员变更 
             1      : 'text',
             3      : 'image',
+            9      : 'scancashmoney',            # 面对面付款
             34     : 'voice',
             35     : 'qqmail',
             37     : 'friendrequest',
