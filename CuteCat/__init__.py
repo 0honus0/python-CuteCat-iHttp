@@ -64,7 +64,7 @@ class CuteCat(SyncApi):
 
         message = Message(ev)
         ev['type'] = message.type
-        if message.type in ['image' , 'voice' , 'video' , 'share']:
+        if message.type in ['image' , 'voice' , 'video' , 'share' , 'file']:
             ev['msg'] = self.url_preprocess(ev)
         results = self._bus.emit(event_type, ev)
         res = results[0] if results else None
