@@ -3,12 +3,12 @@ from typing import List, Callable , Coroutine , Dict , Any
 from .Event import Event
 from .Message import Message
 from .Bus import EventBus
-from .Api import SyncApi , HttpApi
+from .Api import Api , HttpApi
 import logging
 import os, re
 import magic
 
-class CuteCat(SyncApi):
+class CuteCat(Api):
 
     def __init__(self , api_url : str = None , self_url: str = 'http://0.0.0.0:18888', robot_wxid : str = None ,access_token : str = None) :
         self._bus = EventBus()
