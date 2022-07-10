@@ -5,9 +5,9 @@ import requests
 import json
 import logging
 
-class SyncApi:
+class Api:
     """
-    异步 API 接口类。
+    API 接口类。
     继承此类的具体实现类应实现异步的 `call_action` 方法。
     """
 
@@ -20,7 +20,7 @@ class SyncApi:
         """获取一个可调用对象，用于调用对应 API。"""
         return functools.partial(self.call_action, item)
 
-class HttpApi(SyncApi):
+class HttpApi(Api):
     """
     HTTP API 实现类。
     """
