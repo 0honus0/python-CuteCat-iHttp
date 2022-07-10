@@ -17,7 +17,7 @@ class CuteCat(SyncApi):
         self._server_app.add_url_rule('/tmp/<filename>', methods=['GET'] ,view_func=self._handle_request)
         self.logger = self._server_app.logger
         self.api_url = api_url
-        self.host = re.findall('http://(.+?):', self_url)[0]
+        self.host = "0.0.0.0"
         self.port = int((re.findall('http://.+?:(.+?)$',self_url))[0])
         if not access_token:
             self._api = HttpApi(api_url = api_url , robot_wxid = robot_wxid)
