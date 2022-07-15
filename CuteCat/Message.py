@@ -8,6 +8,8 @@ class Message:
     def type(self):
         type_dict = {
             0      : 'eventnotify', # 成员变更 
+            1009   : 'eventnotify', # 减少成员 
+            1010   : 'eventnotify', # 添加成员
             1      : 'text',
             3      : 'image',
             9      : 'scancashmoney',            # 面对面付款
